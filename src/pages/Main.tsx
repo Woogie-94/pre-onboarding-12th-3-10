@@ -7,9 +7,12 @@ import Header from "../components/common/Header";
 import SearchInput from "../components/search/SearchInput";
 import SearchResult from "../components/search/SearchResult";
 import useInput from "../hooks/useInput";
+import useSearchQuery from "../queries/useSearchQuery";
 
 const Main = () => {
   const [searchValue, onChange] = useInput("");
+  const { data, refetch } = useSearchQuery(searchValue);
+
   // handleFocus, handleChange, isVisible 임시
   const handleFocus = () => {
     // for SearchInput handleFocus
