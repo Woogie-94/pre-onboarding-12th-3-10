@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { styled } from "styled-components";
 
 import MainBackgroundSvg_1 from "../assets/svg/MainBackgroundSvg_1";
@@ -6,6 +7,7 @@ import MainBackgroundSvg_3 from "../assets/svg/MainBackgroundSvg_3";
 import Header from "../components/common/Header";
 import SearchInput from "../components/search/SearchInput";
 import SearchResult from "../components/search/SearchResult";
+import useDebounce from "../hooks/useDebounce";
 import useInput from "../hooks/useInput";
 import useSearchQuery from "../queries/useSearchQuery";
 
@@ -23,6 +25,13 @@ const Main = () => {
   };
 
   const isVisible = true; // for SearchResult
+
+  const debounce = useDebounce();
+  useEffect(() => {
+    if (searchValue) {
+      debounce(refetch, 200);
+    }
+  }, [searchValue, debounce, refetch]);
 
   // SearchInput, SearchResult 속성값 임시
   return (
