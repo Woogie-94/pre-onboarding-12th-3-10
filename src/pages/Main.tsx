@@ -8,18 +8,18 @@ import SearchInput from "../components/search/SearchInput";
 import SearchResult from "../components/search/SearchResult";
 
 const Main = () => {
+  // handleFocus, handleChange, isVisible 임시
   const handleFocus = () => {
     // for SearchInput handleFocus
   };
 
-  const handleChange = (value: string) => {
+  const handleChange = () => {
     // for SearchInput onChange
   };
 
   const isVisible = true; // for SearchResult
 
-
-
+  // SearchInput, SearchResult 속성값 임시
   return (
     <Wrapper>
       <Header />
@@ -28,7 +28,6 @@ const Main = () => {
           국내 모든 임상시험 검색하고 <br /> 온라인으로 참여하기
         </Title>
         <div>
-          { /*값들 전부 임시값*/ }
           <SearchInput value={"**searchValue"} isFocus={true} onChange={handleChange} onFocus={handleFocus} />
           {isVisible && <SearchResult result={[]} focusIndex={0} />}
         </div>
