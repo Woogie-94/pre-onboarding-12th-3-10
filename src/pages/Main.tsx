@@ -4,10 +4,22 @@ import MainBackgroundSvg_1 from "../assets/svg/MainBackgroundSvg_1";
 import MainBackgroundSvg_2 from "../assets/svg/MainBackgroundSvg_2";
 import MainBackgroundSvg_3 from "../assets/svg/MainBackgroundSvg_3";
 import Header from "../components/common/Header";
-
-
+import SearchInput from "../components/search/SearchInput";
+import SearchResult from "../components/search/SearchResult";
 
 const Main = () => {
+  const handleFocus = () => {
+    // for SearchInput handleFocus
+  };
+
+  const handleChange = (value: string) => {
+    // for SearchInput onChange
+  };
+
+  const isVisible = true; // for SearchResult
+
+
+
   return (
     <Wrapper>
       <Header />
@@ -15,23 +27,27 @@ const Main = () => {
         <Title>
           국내 모든 임상시험 검색하고 <br /> 온라인으로 참여하기
         </Title>
+        <div>
+          { /*값들 전부 임시값*/ }
+          <SearchInput value={"**searchValue"} isFocus={true} onChange={handleChange} onFocus={handleFocus} />
+          {isVisible && <SearchResult result={[]} focusIndex={0} />}
+        </div>
+        <MainSvg1>
+          <MainBackgroundSvg_1 />
+        </MainSvg1>
+        <MainSvg2>
+          <MainBackgroundSvg_2 />
+        </MainSvg2>
+        <MainSvg3>
+          <MainBackgroundSvg_3 />
+        </MainSvg3>
       </Inner>
-      <MainSvg1>
-        <MainBackgroundSvg_1 />
-      </MainSvg1>
-      <MainSvg2>
-        <MainBackgroundSvg_2 />
-      </MainSvg2>
-      <MainSvg3>
-        <MainBackgroundSvg_3 />
-      </MainSvg3>
     </Wrapper>
   );
 };
 
 export default Main;
 
-// Style
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
