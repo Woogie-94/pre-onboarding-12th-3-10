@@ -6,15 +6,17 @@ import MainBackgroundSvg_3 from "../assets/svg/MainBackgroundSvg_3";
 import Header from "../components/common/Header";
 import SearchInput from "../components/search/SearchInput";
 import SearchResult from "../components/search/SearchResult";
+import useInput from "../hooks/useInput";
 
 const Main = () => {
+  const [searchValue, onChange] = useInput("");
   // handleFocus, handleChange, isVisible 임시
   const handleFocus = () => {
     // for SearchInput handleFocus
   };
 
-  const handleChange = () => {
-    // for SearchInput onChange
+  const handleChange = (value: string) => {
+    onChange(value);
   };
 
   const isVisible = true; // for SearchResult
@@ -28,7 +30,7 @@ const Main = () => {
           국내 모든 임상시험 검색하고 <br /> 온라인으로 참여하기
         </Title>
         <div>
-          <SearchInput value={"**searchValue"} isFocus={true} onChange={handleChange} onFocus={handleFocus} />
+          <SearchInput value={searchValue} isFocus={true} onChange={handleChange} onFocus={handleFocus} />
           {isVisible && <SearchResult result={[]} focusIndex={0} />}
         </div>
         <MainSvg1>
