@@ -10,7 +10,7 @@ import SearchInput from "../components/search/SearchInput";
 import SearchResult from "../components/search/SearchResult";
 import useDebounce from "../hooks/useDebounce";
 import useInput from "../hooks/useInput";
-import useOutsideClick from "../hooks/useOutSideClick";
+import useOutsideClick from "../hooks/useOutsideClick";
 import useSearchQuery from "../queries/useSearchQuery";
 
 const Main = () => {
