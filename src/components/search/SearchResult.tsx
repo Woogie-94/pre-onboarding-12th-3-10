@@ -19,10 +19,10 @@ const SearchResult = ({ result, focusIndex }: Props) => {
           {result.length ? (
             result.map((sick, index) => (
               <ItemWrapper $isFocus={focusIndex === index} key={sick.sickCd}>
-                <SearchSvg width="16" height="16" fill="#A7AFB7" />
-                <SickName to={`/${sick.sickCd}`} state={{ name: sick.sickNm }}>
-                  {sick.sickNm}
-                </SickName>
+                <LinkWrap to={`/${sick.sickCd}`} state={{ name: sick.sickNm }}>
+                  <SearchSvg width="16" height="16" fill="#A7AFB7" />
+                  <SickName>{sick.sickNm}</SickName>
+                </LinkWrap>
               </ItemWrapper>
             ))
           ) : (
@@ -68,10 +68,6 @@ const ListTitle = styled.h3`
 
 const ItemWrapper = styled.li<{ $isFocus: boolean }>`
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
   background-color: ${({ $isFocus }) => ($isFocus ? "#f4f6fa" : "transparent")};
 
   &:hover {
@@ -79,7 +75,7 @@ const ItemWrapper = styled.li<{ $isFocus: boolean }>`
   }
 `;
 
-const SickName = styled(Link)`
+const SickName = styled.div`
   font-size: 18px;
   color: #1e2025;
 `;
@@ -89,4 +85,11 @@ const EmptyMessage = styled.p`
   font-weight: 400;
   color: #a7afb7;
   padding: 0 20px;
+`;
+
+const LinkWrap = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
 `;
