@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 import MainBackgroundSvg_1 from "../assets/svg/MainBackgroundSvg_1";
@@ -9,12 +10,15 @@ import SearchInput from "../components/search/SearchInput";
 import SearchResult from "../components/search/SearchResult";
 import useDebounce from "../hooks/useDebounce";
 import useInput from "../hooks/useInput";
+import useOutsideClick from "../hooks/useOutSideClick";
 import useSearchQuery from "../queries/useSearchQuery";
 
 const Main = () => {
+  const navigate = useNavigate();
   const [searchValue, onChange] = useInput("");
   const [isFocus, setIsFocus] = useState(false);
   const { data, refetch } = useSearchQuery(searchValue);
+  const [keyIndex, dispatch] = useReducer(keyControlReducer, START_KEY_INDEX);
 
   const handleFocus = () => {
     // NOTE 바깥 클릭 시 false 값 변경 필요
@@ -34,7 +38,30 @@ const Main = () => {
     }
   }, [searchValue, debounce, refetch]);
 
-  // SearchInput, SearchResult 속성값 임시
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.nativeEvent.isComposing || !data) {
+      return;
+    }
+
+    switch (event.key) {
+      case "ArrowDown":
+        dispatch({ type: "NEXT_INDEX", maxLength: data.length - 1 });
+        break;
+      case "ArrowUp":
+        dispatch({ type: "PREV_INDEX" });
+        break;
+      case "Enter":
+        navigate(data[keyIndex].sickCd, { state: { name: data[keyIndex].sickNm } });
+        break;
+    }
+  };
+
+  const focusRef = useRef(null);
+
+  useOutsideClick(focusRef, () => {
+    setIsFocus(false);
+  });
+
   return (
     <Wrapper>
       <Header />
@@ -42,9 +69,9 @@ const Main = () => {
         <Title>
           국내 모든 임상시험 검색하고 <br /> 온라인으로 참여하기
         </Title>
-        <SearchBox>
-          <SearchInput value={searchValue} isFocus={true} onChange={handleChange} onFocus={handleFocus} />
-          {isVisible && <SearchResult result={data} focusIndex={0} />}
+        <SearchBox onKeyDown={handleKeyDown} ref={focusRef}>
+          <SearchInput value={searchValue} isFocus={isFocus} onChange={handleChange} onFocus={handleFocus} />
+          {isVisible && <SearchResult result={data} focusIndex={keyIndex} />}
         </SearchBox>
         <MainSvg1>
           <MainBackgroundSvg_1 />
@@ -61,6 +88,21 @@ const Main = () => {
 };
 
 export default Main;
+
+type Action = { type: "NEXT_INDEX"; maxLength: number } | { type: "PREV_INDEX" } | { type: "RESET_INDEX" };
+const START_KEY_INDEX = -1;
+const keyControlReducer = (state: number, action: Action) => {
+  switch (action.type) {
+    case "NEXT_INDEX":
+      return state >= action.maxLength ? action.maxLength : state + 1;
+    case "PREV_INDEX":
+      return state > 0 ? state - 1 : 0;
+    case "RESET_INDEX":
+      return START_KEY_INDEX;
+    default:
+      return state;
+  }
+};
 
 const Wrapper = styled.div`
   display: flex;
