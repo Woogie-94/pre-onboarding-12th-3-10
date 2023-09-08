@@ -42,7 +42,7 @@
 
 ## 배포 링크
 
-[배포 사이트]()
+[배포 사이트](http://pre-onboarding-3-10.s3-website.ap-northeast-2.amazonaws.com/)
 
 ## 프로젝트 실행 방법
 
