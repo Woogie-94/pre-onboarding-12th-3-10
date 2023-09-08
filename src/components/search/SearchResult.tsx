@@ -9,6 +9,7 @@ interface Props {
   result: Sick[];
   focusIndex: number;
 }
+
 const SearchResult = ({ result, focusIndex }: Props) => {
   return (
     <Wrapper>

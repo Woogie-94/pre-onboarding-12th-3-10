@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { styled } from "styled-components";
 
 import MainBackgroundSvg_1 from "../assets/svg/MainBackgroundSvg_1";
@@ -6,18 +7,31 @@ import MainBackgroundSvg_3 from "../assets/svg/MainBackgroundSvg_3";
 import Header from "../components/common/Header";
 import SearchInput from "../components/search/SearchInput";
 import SearchResult from "../components/search/SearchResult";
+import useDebounce from "../hooks/useDebounce";
+import useInput from "../hooks/useInput";
+import useSearchQuery from "../queries/useSearchQuery";
 
 const Main = () => {
+  const [searchValue, onChange] = useInput("");
+  const { data, refetch } = useSearchQuery(searchValue);
+
   // handleFocus, handleChange, isVisible 임시
   const handleFocus = () => {
     // for SearchInput handleFocus
   };
 
-  const handleChange = () => {
-    // for SearchInput onChange
+  const handleChange = (value: string) => {
+    onChange(value);
   };
 
   const isVisible = true; // for SearchResult
+
+  const debounce = useDebounce();
+  useEffect(() => {
+    if (searchValue) {
+      debounce(refetch, 200);
+    }
+  }, [searchValue, debounce, refetch]);
 
   // SearchInput, SearchResult 속성값 임시
   return (
@@ -28,7 +42,7 @@ const Main = () => {
           국내 모든 임상시험 검색하고 <br /> 온라인으로 참여하기
         </Title>
         <div>
-          <SearchInput value={"**searchValue"} isFocus={true} onChange={handleChange} onFocus={handleFocus} />
+          <SearchInput value={searchValue} isFocus={true} onChange={handleChange} onFocus={handleFocus} />
           {isVisible && <SearchResult result={[]} focusIndex={0} />}
         </div>
         <MainSvg1>
