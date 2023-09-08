@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
 import MainBackgroundSvg_1 from "../assets/svg/MainBackgroundSvg_1";
@@ -13,18 +13,19 @@ import useSearchQuery from "../queries/useSearchQuery";
 
 const Main = () => {
   const [searchValue, onChange] = useInput("");
+  const [isFocus, setIsFocus] = useState(false);
   const { data, refetch } = useSearchQuery(searchValue);
 
-  // handleFocus, handleChange, isVisible 임시
   const handleFocus = () => {
-    // for SearchInput handleFocus
+    // NOTE 바깥 클릭 시 false 값 변경 필요
+    setIsFocus(true);
   };
 
   const handleChange = (value: string) => {
     onChange(value);
   };
 
-  const isVisible = true; // for SearchResult
+  const isVisible = !!data && isFocus;
 
   const debounce = useDebounce();
   useEffect(() => {
@@ -41,10 +42,10 @@ const Main = () => {
         <Title>
           국내 모든 임상시험 검색하고 <br /> 온라인으로 참여하기
         </Title>
-        <div>
+        <SearchBox>
           <SearchInput value={searchValue} isFocus={true} onChange={handleChange} onFocus={handleFocus} />
-          {isVisible && <SearchResult result={[]} focusIndex={0} />}
-        </div>
+          {isVisible && <SearchResult result={data} focusIndex={0} />}
+        </SearchBox>
         <MainSvg1>
           <MainBackgroundSvg_1 />
         </MainSvg1>
@@ -83,6 +84,9 @@ const Title = styled.h2`
   color: #1e2025;
   text-align: center;
   margin-bottom: 40px;
+`;
+const SearchBox = styled.div`
+  z-index: 1;
 `;
 const MainSvg1 = styled.div`
   position: absolute;
